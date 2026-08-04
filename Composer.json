@@ -1,0 +1,11 @@
+{
+    "name": "mark/kpi-plugin",
+    "description": "KPI Dashboard Plugin for Kanboard",
+    "type": "kanboard-plugin",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Kanboard\\Plugin\\KPI\\": ""
+        }
+    }
+}
