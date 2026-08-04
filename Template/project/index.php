@@ -204,8 +204,11 @@
 
 </div>
 
-<!-- Data used by dashboard.js -->
-<div id="kpi-dashboard-data" data-completed="<?= $stats['completed'] ?>" data-open="<?= $stats['open'] ?>"
-    data-overdue="<?= $stats['overdue'] ?>" data-progress="<?= $stats['progress'] ?>">
-</div>
-</div>
+    <!-- Data used by dashboard.js -->
+    <div id="kpi-dashboard-data" 
+        data-completed="<?= $stats['completed'] ?>" 
+        data-open="<?= $stats['open'] ?>"
+        data-overdue="<?= $stats['overdue'] ?>" 
+        data-progress="<?= $stats['progress'] ?>">
+    </div>
+</div> 

@@ -33,6 +33,7 @@
                         <th width="150"><?= t('Assignee') ?></th>
                         <th width="200"><?= t('Start Date') ?></th>
                         <th width="200"><?= t('Due Date') ?></th>
+                        <th width="200"><?= t('Comments') ?></th>
                     </tr>
                     </thead>
 
@@ -57,7 +58,7 @@
                             </td>
 
                             <td>
-                                <?= $task['owner_id'] ?: '-' ?>
+                                <?= $task['assignee_name'] ?: '-' ?>
                             </td>
 
                             <td>
@@ -70,6 +71,23 @@
                                 <?= $task['date_due'] > 0
                                     ? date('l, F j, Y', $task['date_due'])
                                     : '-' ?>
+                            </td>
+
+                            <td>
+                                <?php if (!empty($task['comment_count'])): ?>
+                                <?= $this->modal->small(
+                                    'comments',
+                                    t('Read'). ' ('.$task['comment_count'].')',
+                                    'TaskController', 
+                                    'comments',
+                                    array(
+                                        'task_id' => $task['id'],
+                                        'plugin' => 'KPI'
+                                    )
+                                ) ?>
+                                <?php else: ?>
+                                    <?= t('-') ?>
+                                <?php endif; ?>
                             </td>
 
                         </tr>

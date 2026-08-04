@@ -13,7 +13,7 @@ class DashboardService extends Base
             ->count();
 
         $open = $this->db->table('tasks')
-            ->eq('project_id', $projectId)
+            ->eq('project_id', $projectId) 
             ->eq('is_active', 1)
             ->count();
 
@@ -40,29 +40,53 @@ class DashboardService extends Base
 
     public function getProjectTable(int $projectId, ?string $status = null): array
     {
-        $query = $this->db->table('tasks')
-            ->eq('project_id', $projectId);
+        $sql = "
+        SELECT
+            t.*,
+            u.username AS assignee_name,
+            c.title AS column_name,
+            co.comment_count
+        FROM tasks t
+        LEFT JOIN users u
+            ON u.id = t.owner_id
+        LEFT JOIN columns c
+            ON c.id = t.column_id
+       LEFT JOIN (
+            SELECT task_id, COUNT(*) AS comment_count
+            FROM comments
+            GROUP BY task_id
+        ) co ON co.task_id = t.id
+        WHERE t.project_id = ?
+        ";
+
+        $params = [$projectId];
 
         switch ($status) {
+
             case 'completed':
-                $query->eq('is_active', 0);
+                $sql .= " AND t.is_active = 0";
                 break;
 
             case 'open':
-                $query->eq('is_active', 1);
+                $sql .= " AND t.is_active = 1";
                 break;
 
             case 'overdue':
-                $query
-                    ->eq('is_active', 1)
-                    ->lt('date_due', time());
+                $sql .= "
+                AND t.is_active = 1
+                AND t.date_due > 0
+                AND t.date_due < ?
+            ";
+                $params[]  = time();
                 break;
 
             default:
                 return [];
         }
 
-        return $query->findAll();
+        $sql .= " ORDER BY t.date_creation DESC";
+
+        return $this->db->execute($sql, $params)->fetchAll();
     }
 
     public function getTaskStatusChart($projectId)

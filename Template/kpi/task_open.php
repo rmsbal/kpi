@@ -1,4 +1,5 @@
 <?= $this->projectHeader->render($project,'TaskController','task_open',false,'KPI');?>
+
 <div class="container">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -30,6 +31,7 @@
                         <th width="70">#</th>
                         <th><?= t('Title') ?></th>
                         <th width="150"><?= t('Assignee') ?></th>
+                        <th width="150"><?= t('Column') ?></th>
                         <th width="200"><?= t('Start Date') ?></th>
                         <th width="200"><?= t('Due Date') ?></th>
                     </tr>
@@ -56,7 +58,11 @@
                             </td>
 
                             <td>
-                                <?= $task['owner_id'] ?: '-' ?>
+                                <?= $task['assignee_name'] ?: '-' ?>
+                            </td>
+
+                            <td>
+                                <?= $task['column_name'] ?>
                             </td>
 
                             <td>

@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "#1E88E5",
                         "#E53935"
                     ],
-                    borderColor: "#ffffff",
+                    borderColor: "#ffffff", 
                     borderWidth: 2
                 }]
             };
@@ -103,7 +103,12 @@ document.addEventListener("DOMContentLoaded", function () {
                     "Mar",
                     "Apr",
                     "May",
-                    "Jun"
+                    "Jun",
+                    "Aug",
+                    "Sep",
+                    "Oct",
+                    "Nov",
+                    "Dec"
                 ],
 
                 datasets: [{
