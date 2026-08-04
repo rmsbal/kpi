@@ -7,14 +7,17 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        //die('KPI Plugin Loaded');
-
         $this->route->addRoute('/kpi', 'KPIController', 'index', 'KPI');
         $this->route->addRoute('/kpi/create', 'KPIController', 'create', 'KPI');
         $this->route->addRoute('/kpi/save', 'KPIController', 'save', 'KPI');
         $this->route->addRoute('/kpi/edit/:id', 'KPIController', 'edit', 'KPI');
         $this->route->addRoute('/kpi/update/:id', 'KPIController', 'update', 'KPI');
         $this->route->addRoute('/kpi/remove/:id', 'KPIController', 'remove', 'KPI');
+
+        // Task Routes
+        $this->route->addRoute('/kpi/task_open', 'TaskController', 'task_open', 'KPI');
+        $this->route->addRoute('/kpi/task_overdue', 'TaskController', 'task_overdue', 'KPI');
+        $this->route->addRoute('/kpi/task_completed', 'TaskController', '       task_completed', 'KPI');    
 
         $this->container['dashboardService'] = $this->container->factory(function ($c) {
             return new \Kanboard\Plugin\KPI\Service\DashboardService($c);
@@ -32,10 +35,15 @@ class Plugin extends Base
         $this->hook->on('template:layout:js', [
             'template' => 'plugins/KPI/Asset/js/dashboard.js',
         ]);
+
         $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/dashboard.css']);
+        $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/plugin.css']);
+         $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/table.css']);
+
         $this->hook->on('template:layout:js', ['template' => 'plugins/KPI/Asset/js/kpi.js']);
         // Dashboard Menu
         $this->template->hook->attach('template:dashboard:sidebar', 'KPI:dashboard/sidebar');
+
         // Top Menu
         //$this->template->hook->attach('template:header:dropdown', 'KPI:dashboard/menu');
         $this->template->hook->attach('template:project-header:view-switcher', 'KPI:project_header/views');

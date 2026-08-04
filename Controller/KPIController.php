@@ -75,8 +75,8 @@ class KPIController extends BaseController
         $values['created_at'] = time();
         $values['updated_at'] = time();
         
-        $this->logger->info(print_r($values, true));
-        $this->logger->info(print_r($project, true));
+        // $this->logger->info(print_r($values, true));
+        // $this->logger->info(print_r($project, true));
 
         $this->db->table('kpi_definition')->insert($values);
 

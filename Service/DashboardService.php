@@ -1,5 +1,4 @@
 <?php
-
 namespace Kanboard\Plugin\KPI\Service;
 
 use Kanboard\Core\Base;
@@ -37,6 +36,33 @@ class DashboardService extends Base
             'total'     => $total,
             'progress'  => $progress,
         ];
+    }
+
+    public function getProjectTable(int $projectId, ?string $status = null): array
+    {
+        $query = $this->db->table('tasks')
+            ->eq('project_id', $projectId);
+
+        switch ($status) {
+            case 'completed':
+                $query->eq('is_active', 0);
+                break;
+
+            case 'open':
+                $query->eq('is_active', 1);
+                break;
+
+            case 'overdue':
+                $query
+                    ->eq('is_active', 1)
+                    ->lt('date_due', time());
+                break;
+
+            default:
+                return [];
+        }
+
+        return $query->findAll();
     }
 
     public function getTaskStatusChart($projectId)

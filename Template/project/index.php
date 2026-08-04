@@ -68,13 +68,13 @@
             <div class="card-title"><?= t('Completed Tasks') ?></div>
             <div class="card-value"><?= $stats['completed'] ?></div>
             <div class="card-footer"><?= t('Finished Tasks') ?>
-                <?= $this->url->icon('link', '', 'TaskController', 'index', [
+                <?= $this->url->icon('link', '', 'TaskController', 'task_completed', [
                     'project_id' => $project['id'],
                     'plugin' => 'KPI',
                     ],
                     false,
                     'view-completed',
-                    t('Vew completed tasks'),
+                    t('View completed tasks'),
                     )?>
             </div>
         </div>
@@ -89,7 +89,7 @@
             <div class="card-title"><?= t('Open Tasks') ?></div>
             <div class="card-value"><?= $stats['open'] ?></div>
             <div class="card-footer"><?= t('Currently Active') ?>
-            <?= $this->url->icon('link', '', 'TaskController', 'index', [
+            <?= $this->url->icon('link', '', 'TaskController', 'task_open', [
                     'project_id' => $project['id'],
                     'plugin' => 'KPI',
                     ],
@@ -110,7 +110,7 @@
             <div class="card-title"><?= t('Overdue Tasks') ?></div>
             <div class="card-value"><?= $stats['overdue'] ?></div>
             <div class="card-footer"><?= t('Needs Attention') ?>
-            <?= $this->url->icon('link', '', 'TaskController', 'index', [
+            <?= $this->url->icon('link', '', 'TaskController', 'task_overdue', [
                     'project_id' => $project['id'],
                     'plugin' => 'KPI',
                     ],
