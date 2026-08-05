@@ -1,10 +1,10 @@
+<?= $this->render('app/flash_message') ?>
 <?= $this->projectHeader->render($project,'KPIController','project',false,'KPI');?>
-
 <div class="dashboard-panel">
 
     <div class="panel-header">
 
-        <h3><?= t('Configured KPIs') ?></h3>
+        <h3><?= t('Key Performance Indicators') ?></h3>
 
        <?= $this->modal->small(
             'plus',
@@ -71,6 +71,18 @@
                         [
                             'id' => $kpi['id'],
                             'values' => $kpi,
+                            'plugin' => 'KPI'
+                        ]
+                    ) ?>
+
+                    <?= $this->modal->small(
+                        'trash',
+                        '',
+                        'KPIController',
+                        'confirm',
+                        [
+                            'kpi_id' => $kpi['id'],
+                            'kpi_name' => $kpi['name'],
                             'plugin' => 'KPI'
                         ]
                     ) ?>

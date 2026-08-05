@@ -11,8 +11,8 @@ class KPIController extends BaseController
             ->table('kpi_definition')
             ->asc('name')
             ->findAll();
-        
-        $project = $this->getProject();
+
+        $project  = $this->getProject();
         $projects = $this->projectModel->getAll();
 
         $this->response->html(
@@ -31,7 +31,7 @@ class KPIController extends BaseController
 
     public function project()
     {
-        $project = $this->getProject();
+        $project  = $this->getProject();
         $projects = $this->projectModel->getAll();
 
         $stats = $this->dashboardService->getProjectStats($project['id']);
@@ -57,11 +57,13 @@ class KPIController extends BaseController
     }
     public function create()
     {
+        $project = $this->getProject();
+
         $this->response->html(
             $this->template->render('KPI:kpi/create', [
                 'values' => [
-                    'project_id' => $this->request->getIntegerParam('project_id'),
-                    'active' => 1,
+                    'project_id' => $project['id'],
+                    'active'     => 1,
                 ],
                 'errors' => [],
             ])
@@ -71,19 +73,17 @@ class KPIController extends BaseController
     public function save()
     {
         $values = $this->request->getValues();
-        
+
         $values['created_at'] = time();
         $values['updated_at'] = time();
-        
-        // $this->logger->info(print_r($values, true));
-        // $this->logger->info(print_r($project, true));
 
         $this->db->table('kpi_definition')->insert($values);
 
         $this->flash->success(t('KPI created successfully.'));
 
         $this->response->redirect(
-            $this->helper->url->to('KPIController', 'index', [], 'KPI')
+            $this->helper->url->to('KPIController', 'index', []),
+            true
         );
     }
 
@@ -121,10 +121,20 @@ class KPIController extends BaseController
             ->update($values);
 
         $this->flash->success(t('KPI updated successfully.'));
-
         $this->response->redirect(
-            $this->helper->url->to('KPIController', 'index', [], 'KPI')
+            $this->helper->url->to('KPIController', 'index', []), true
         );
+    }
+
+    public function confirm()
+    {
+        $kpi_id = $this->request->getIntegerParam('kpi_id');
+        $kpi_name = $this->request->getStringParam('kpi_name');
+
+        $this->response->html($this->template->render('KPI:kpi/removed', [
+            'kpi_id' => $kpi_id,
+            'kpi_name' => $kpi_name,
+        ]));
     }
 
     public function remove()
@@ -139,7 +149,7 @@ class KPIController extends BaseController
         $this->flash->success(t('KPI deleted successfully.'));
 
         $this->response->redirect(
-            $this->helper->url->to('KPIController', 'index', [], 'KPI')
+            $this->helper->url->to('KPIController', 'index', []), true
         );
     }
 }

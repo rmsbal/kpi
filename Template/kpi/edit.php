@@ -7,7 +7,10 @@
 <form method="post" action="<?= $this->url->href(
     'KPIController',
     'update',
-    ['id' => $values['id']],
+    [
+        'id' => $values['id'],
+        'plugin' => 'KPI'
+    ],
     'KPI'
 ) ?>">
 

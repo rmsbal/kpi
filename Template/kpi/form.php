@@ -1,5 +1,6 @@
 <div class="form-column">
-
+    <input type="hidden" name="project_id" value="<?= $this->text->e($values['project_id']) ?>">
+    
     <?= $this->form->label(t('Name'), 'name') ?>
 
     <?= $this->form->text(

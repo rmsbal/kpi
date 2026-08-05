@@ -30,10 +30,10 @@
                     <tr>
                         <th width="70">#</th>
                         <th><?= t('Title') ?></th>
-                        <th width="150"><?= t('Assignee') ?></th>
-                        <th width="200"><?= t('Start Date') ?></th>
-                        <th width="200"><?= t('Due Date') ?></th>
-                        <th width="200"><?= t('Comments') ?></th>
+                        <th><?= t('Assignee') ?></th>
+                        <th><?= t('Start Date') ?></th>
+                        <th><?= t('Due Date') ?></th>
+                        <th><?= t('Comments') ?></th>
                     </tr>
                     </thead>
 

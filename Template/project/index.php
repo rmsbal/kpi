@@ -2,31 +2,18 @@
 
 <div class="container">
 <div class="dashboard-header">
-
     <div class="dashboard-project-selector">
-
         <label>
-
             <i class="fa fa-folder-open"></i>
-
             <?= t('Project') ?>
-
         </label>
-
         <select id="projectSwitcher" class="form-control">
-
             <?php foreach($projects as $item): ?>
-
             <option value="<?= $item['id']?>" <?= $item['id']==$project['id']?'selected':'' ?>>
-
                 <?= $this->text->e($item['name']) ?>
-
             </option>
-
             <?php endforeach ?>
-
         </select>
-
     </div>
     <div class="dashboard-actions">
         <?= $this->url->link(
@@ -46,24 +33,20 @@
 </div>
 
 <div class="dashboard-grid">
-
     <div class="dashboard-card primary">
         <div class="card-icon">
             <i class="fa fa-line-chart"></i>
         </div>
-
         <div class="card-content">
             <div class="card-title"><?= t('Overall KPI') ?></div>
             <div class="card-value"><?= $stats['progress'] ?>%</div>
             <div class="card-footer"><?= t('Overall Project Performance') ?></div>
         </div>
     </div>
-
     <div class="dashboard-card completed">
         <div class="card-icon">
             <i class="fa fa-check"></i>
         </div>
-
         <div class="card-content">
             <div class="card-title"><?= t('Completed Tasks') ?></div>
             <div class="card-value"><?= $stats['completed'] ?></div>
@@ -84,7 +67,6 @@
         <div class="card-icon">
             <i class="fa fa-folder-open"></i>
         </div>
-
         <div class="card-content">
             <div class="card-title"><?= t('Open Tasks') ?></div>
             <div class="card-value"><?= $stats['open'] ?></div>
@@ -181,27 +163,6 @@
         </div>
 
     </div>
-
-    <div class="dashboard-panel">
-
-        <h3><?= t('KPI Distribution') ?></h3>
-
-        <div class="chart-container">
-            <canvas id="distributionChart"></canvas>
-        </div>
-
-    </div>
-
-    <div class="dashboard-panel">
-
-        <h3><?= t('Monthly Performance') ?></h3>
-
-        <div class="chart-container">
-            <canvas id="performanceChart"></canvas>
-        </div>
-
-    </div>
-
 </div>
 
     <!-- Data used by dashboard.js -->
