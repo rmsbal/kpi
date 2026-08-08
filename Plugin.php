@@ -99,6 +99,36 @@ class Plugin extends Base
             }
         );
 
+        $this->hook->on(
+            'model:task:creation:prepare',
+            function (&$values) {
+
+                $task_id = $this->request->getIntegerParam('task_id');
+
+                $kpi_id = isset($values['kpi_id'])
+                    ? (int) $values['kpi_id']
+                    : 0;
+
+                $kpi_points = isset($values['kpi_points'])
+                    ? (float) $values['kpi_points']
+                    : 0;
+
+                if ($kpi_id <= 0) {
+                    return;
+                }
+
+                $this->kpiModel->update(
+                    $task_id,
+                    $kpi_id,
+                    $kpi_points
+                );
+
+                // VERY IMPORTANT
+                unset($values['kpi_id']);
+                unset($values['kpi_points']);
+            }
+        );
+
         // Register Assets
         $this->hook->on('template:layout:js', [
             'template' => 'plugins/KPI/Asset/js/chart.min.js',
