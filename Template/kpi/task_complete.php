@@ -22,9 +22,9 @@
                 <?= t('Task List') ?>
             </div>
 
-            <div class="table-responsive">
+            <div class="kb-table-container">
 
-                <table class="table table-hover table-striped align-middle mb-0">
+                <table class="kb-table">
 
                     <thead class="table-light">
                     <tr>

@@ -3,13 +3,17 @@ namespace Kanboard\Plugin\KPI\Controller;
 
 use Kanboard\Controller\BaseController;
 
-class KPIController extends BaseController
+class KPIController extends BaseController 
 {
     public function index()
     {
+    
+        $project  = $this->getProject();
+
         $kpis = $this->db
             ->table('kpi_definition')
-            ->asc('name')
+            ->eq('project_id', $project['id'])
+            ->asc('title')
             ->findAll();
 
         $project  = $this->getProject();
@@ -35,12 +39,9 @@ class KPIController extends BaseController
         $projects = $this->projectModel->getAll();
 
         $stats = $this->dashboardService->getProjectStats($project['id']);
-
-        $kpis = $this->db
-            ->table('kpi_definition')
-            ->eq('project_id', $project['id'])
-            ->findAll();
-
+        $kpiStats = $this->dashboardService->getKpiStats($project['id']);
+        $taskTrend = $this->dashboardService->getTaskTrend($project['id']);
+        
         $this->response->html(
             $this->helper->layout->app(
                 'KPI:project/index',
@@ -48,7 +49,8 @@ class KPIController extends BaseController
                     'project'     => $project,
                     'projects'    => $projects,
                     'stats'       => $stats,
-                    'kpis'        => $kpis,
+                    'kpiStats'    => $kpiStats,
+                    'taskTrend'   => $taskTrend,
                     'title'       => $project['name'],
                     'description' => $this->helper->projectHeader->getDescription($project),
                 ]
@@ -58,14 +60,17 @@ class KPIController extends BaseController
     public function create()
     {
         $project = $this->getProject();
+        $tasks   = $this->dashboardService->getProjectTable($project['id'], 'completed');
 
         $this->response->html(
             $this->template->render('KPI:kpi/create', [
                 'values' => [
                     'project_id' => $project['id'],
-                    'active'     => 1,
+                    'target' => 0,
+                    'actual' => 0
                 ],
                 'errors' => [],
+                'tasks' => $tasks,
             ])
         );
     }
@@ -112,7 +117,7 @@ class KPIController extends BaseController
     {
         $id = $this->request->getIntegerParam('id');
 
-        $values               = $this->request->getValues();
+        $values               = $this->request->getValues(); 
         $values['updated_at'] = time();
 
         $this->db

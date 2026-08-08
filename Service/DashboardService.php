@@ -13,7 +13,7 @@ class DashboardService extends Base
             ->count();
 
         $open = $this->db->table('tasks')
-            ->eq('project_id', $projectId) 
+            ->eq('project_id', $projectId)
             ->eq('is_active', 1)
             ->count();
 
@@ -98,5 +98,120 @@ class DashboardService extends Base
             $stats['open'],
             $stats['overdue'],
         ];
+    }
+
+    public function getKpiStats($projectId)
+    {
+        // Get KPI status counts
+        $counts = $this->db
+            ->table('kpi_definition')
+            ->columns('status', 'COUNT(*) AS total')
+            ->eq('project_id', $projectId)
+            ->groupBy('status')
+            ->findAll();
+
+        $kpiStats = [
+            'done'    => 0,
+            'ongoing' => 0,
+            'pending' => 0,
+            'kpiProg' => 0,
+        ];
+
+        $total_kpi = 0;
+
+        foreach ($counts as $row) {
+
+            $count      = (int) $row['total'];
+            $total_kpi += $count;
+
+            switch (strtoupper($row['status'])) {
+
+                case 'DONE':
+                    $kpiStats['done'] = $count;
+                    break;
+
+                case 'ONGOING':
+                    $kpiStats['ongoing'] = $count;
+                    break;
+
+                case 'PENDING':
+                    $kpiStats['pending'] = $count;
+                    break;
+            }
+        }
+
+        // Calculate overall progress
+        if ($total_kpi > 0) {
+            $kpiStats['kpiProg'] = round(($kpiStats['done'] / $total_kpi) * 100, 2);
+        }
+
+        return $kpiStats;
+    }
+
+    public function getTaskTrend($projectId)
+    {
+        $tasks = $this->db
+            ->table('tasks')
+            ->columns(
+                'date_creation',
+                'date_completed'
+            )
+            ->eq('project_id', $projectId)
+            ->orderBy('date_creation')
+            ->findAll();
+
+        $months = [];
+
+        foreach ($tasks as $task) {
+
+            // Group by the month the task was created
+            $month = date('Y-m', $task['date_creation']);
+
+            if (! isset($months[$month])) {
+                $months[$month] = [
+                    'total'     => 0,
+                    'completed' => 0,
+                ];
+            }
+
+            // Total tasks created this month
+            $months[$month]['total']++;
+
+            // Task is completed
+            if (
+                ! empty($task['date_completed']) &&
+                $task['date_completed'] > 0
+            ) {
+                $months[$month]['completed']++;
+            }
+        }
+
+        $result = [
+            'labels'     => [],
+            'total'      => [],
+            'completed'  => [],
+            'percentage' => [],
+        ];
+
+        foreach ($months as $month => $values) {
+
+            $total     = $values['total'];
+            $completed = $values['completed'];
+
+            $percentage = $total > 0
+                ? round(($completed / $total) * 100, 2)
+                : 0;
+
+            $result['labels'][] = date(
+                'M Y',
+                strtotime($month . '-01')
+            );
+
+            $result['total'][]      = $total;
+            $result['completed'][]  = $completed;
+            $result['percentage'][] = $percentage;
+        }
+
+        return $result;
     }
 }

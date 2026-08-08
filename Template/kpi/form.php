@@ -1,96 +1,103 @@
-<div class="form-column">
-    <input type="hidden" name="project_id" value="<?= $this->text->e($values['project_id']) ?>">
-    
-    <?= $this->form->label(t('Name'), 'name') ?>
+<div class="kb-form">
 
-    <?= $this->form->text(
-        'name',
-        $values,
-        $errors
-    ) ?>
+    <div class="kb-form-panel">
 
+        <div class="kb-form-header">
+            <?= t('KPI Information') ?>
+        </div>
 
-    <?= $this->form->label(t('Description'), 'description') ?>
+        <div class="kb-form-body">
 
-    <?= $this->form->textArea(
-        'description',
-        $values,
-        $errors
-    ) ?>
+            <input type="hidden"
+                   name="project_id"
+                   value="<?= $this->text->e($values['project_id']) ?>">
 
+            <!-- Title -->
+            <div class="kb-row">
+                <div class="kb-col">
+                    <?= $this->form->label(t('Title'), 'title') ?>
+                    <?= $this->form->text('title', $values, $errors) ?>
+                </div>
+            </div>
 
-    <?= $this->form->label(t('Metric'), 'metric') ?>
+            <!-- Description -->
+            <div class="kb-row">
+                <div class="kb-col">
+                    <?= $this->form->label(t('Description'), 'description') ?>
+                    <?= $this->form->textArea(
+                        'description',
+                        $values,
+                        $errors,
+                        ['rows' => 5]
+                    ) ?>
+                </div>
+            </div>
 
-    <?= $this->form->select(
-        'metric',
-        array(
-            'completed_tasks'         => t('Completed Tasks'),
-            'open_tasks'              => t('Open Tasks'),
-            'overdue_tasks'           => t('Overdue Tasks'),
-            'average_completion_days' => t('Average Completion'),
-            'blocked_tasks'           => t('Blocked Tasks'),
-        ),
-        $values,
-        $errors
-    ) ?>
+            <!-- Outcome + Type -->
+            <div class="kb-row">
 
+                <div class="kb-col-2">
+                    <?= $this->form->label(t('Output'), 'output') ?>
+                    <?= $this->form->text('output', $values, $errors) ?>
+                </div>
 
-    <?= $this->form->label(t('Target'), 'target') ?>
+                <div class="kb-col-2">
+                    <?= $this->form->label(t('Type'), 'type') ?>
+                    <?= $this->form->select(
+                        'type',
+                        [
+                            'MAJOR' => t('MAJOR'),
+                            'MINOR' => t('MINOR'),
+                        ],
+                        $values,
+                        $errors
+                    ) ?>
+                </div>
 
-    <?= $this->form->text(
-        'target',
-        $values,
-        $errors
-    ) ?>
+            </div>
 
+            <!-- Target + Actual -->
+            <div class="kb-row">
 
-    <?= $this->form->label(t('Weight'), 'weight') ?>
+                <div class="kb-col-2">
+                    <?= $this->form->label(t('Target'), 'target') ?>
+                    <?= $this->form->text('target', $values, $errors) ?>
+                </div>
 
-    <?= $this->form->text(
-        'weight',
-        $values,
-        $errors
-    ) ?>
+                <div class="kb-col-2">
+                    <?= $this->form->label(t('Actual'), 'actual') ?>
+                    <?= $this->form->text('actual', $values, $errors) ?>
+                </div>
 
+                <div class="kb-col-2">
+                        <?= $this->form->label(t('Status'), 'status') ?>
+                        <?= $this->form->select(
+                            'status',
+                            [
+                                'PENDING' => t('PENDING'),
+                                'ONGOING' => t('ONGOING'),
+                                'DONE' => t('DONE'),
+                            ],
+                            $values,
+                            $errors
+                        ) ?>
+                    </div>
 
-    <?= $this->form->label(t('Period'), 'period') ?>
+            </div>
 
-    <?= $this->form->select(
-        'period',
-        array(
-            'daily'   => t('Daily'),
-            'weekly'  => t('Weekly'),
-            'monthly' => t('Monthly'),
-            'yearly'  => t('Yearly'),
-        ),
-        $values,
-        $errors
-    ) ?>
+        </div>
 
+        <div class="kb-form-footer">
 
-    <div class="form-row">
+            <button type="submit" class="btn btn-blue">
+                <?= t('Save KPI') ?>
+            </button>
 
-        <?= $this->form->checkbox(
-            'active',
-            t('Active'),
-            1,
-            !empty($values['active'])
-        ) ?>
+            <a href="#" class="btn js-modal-close">
+                <?= t('Cancel') ?>
+            </a>
 
-    </div>
-
-
-    <div class="form-actions">
-
-        <button type="submit" class="btn btn-blue">
-            <?= t('Save KPI') ?>
-        </button>
-
-        <?= t('or') ?>
-
-        <a href="#" class="js-modal-close">
-            <?= t('Cancel') ?>
-        </a>
+        </div>
 
     </div>
 

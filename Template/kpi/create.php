@@ -1,6 +1,6 @@
 <div class="page-header">
     <h2><?= t('Create KPI') ?></h2>
-</div>
+</div> 
 
 <form method="post"
     action="<?= $this->url->href(
@@ -15,6 +15,7 @@
     <?= $this->render('KPI:kpi/form', [
     'values' => $values,
     'errors' => $errors,
+    'tasks'  => $tasks
 ]) ?>
 
 </form>

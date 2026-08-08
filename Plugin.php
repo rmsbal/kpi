@@ -5,6 +5,8 @@ use Kanboard\Core\Plugin\Base;
 
 class Plugin extends Base
 {
+    private $kpiTaskValues = [];
+
     public function initialize()
     {
         $this->route->addRoute('/kpi', 'KPIController', 'index', 'KPI');
@@ -17,7 +19,7 @@ class Plugin extends Base
         // Task Routes
         $this->route->addRoute('/kpi/task_open', 'TaskController', 'task_open', 'KPI');
         $this->route->addRoute('/kpi/task_overdue', 'TaskController', 'task_overdue', 'KPI');
-        $this->route->addRoute('/kpi/task_completed', 'TaskController', '       task_completed', 'KPI');    
+        $this->route->addRoute('/kpi/task_completed', 'TaskController', '       task_completed', 'KPI');
 
         $this->container['dashboardService'] = $this->container->factory(function ($c) {
             return new \Kanboard\Plugin\KPI\Service\DashboardService($c);
@@ -26,6 +28,76 @@ class Plugin extends Base
         $this->container['dashboardService'] = function ($c) {
             return new \Kanboard\Plugin\KPI\Service\DashboardService($c);
         };
+
+        $this->container['kpiModel'] = function ($c) {
+            return new \Kanboard\Plugin\KPI\Model\KpiModel($c);
+        };
+
+        $this->container['projectDataService'] = function ($c) {
+            return new \Kanboard\Plugin\KPI\Service\ProjectDataService($c);
+        };
+
+        $this->template->hook->attachCallable(
+            'template:task:form:second-column',
+            'KPI:task/form',
+            function ($params) {
+
+                $selectedKpi = null;
+                $kpiPoints   = 0;
+
+                $taskId = $this->request->getIntegerParam('task_id');
+
+                if ($taskId === 0) {
+                    $projectId = $this->request->getIntegerParam('project_id');
+                } else {
+                    $projectId = $this->projectDataService->getProjectIdByTaskId($taskId);
+                    $kpiTask   = $this->kpiModel->getByTaskId($taskId);
+
+                    if ($kpiTask) {
+                        $selectedKpi = $kpiTask['id'];
+                        $kpiPoints   = $kpiTask['task_point'];
+                    }
+                }
+
+                $kpis = $this->kpiModel->getAll($projectId);
+
+                return [
+                    'kpis'         => $kpis,
+                    'selected_kpi' => $selectedKpi,
+                    'kpi_points'   => $kpiPoints,
+                ];
+            }
+        );
+
+        $this->hook->on(
+            'model:task:modification:prepare',
+            function (&$values) {
+
+                $task_id = $this->request->getIntegerParam('task_id');
+
+                $kpi_id = isset($values['kpi_id'])
+                    ? (int) $values['kpi_id']
+                    : 0;
+
+                $kpi_points = isset($values['kpi_points'])
+                    ? (float) $values['kpi_points']
+                    : 0;
+
+                if ($kpi_id <= 0) {
+                    return;
+                }
+
+                $this->kpiModel->update(
+                    $task_id,
+                    $kpi_id,
+                    $kpi_points
+                );
+
+                // VERY IMPORTANT
+                unset($values['kpi_id']);
+                unset($values['kpi_points']);
+            }
+        );
 
         // Register Assets
         $this->hook->on('template:layout:js', [
@@ -38,10 +110,13 @@ class Plugin extends Base
 
         $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/dashboard.css']);
         $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/plugin.css']);
-         $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/table.css']);
+        $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/table.css']);
+        $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/form.css']);
+        $this->hook->on('template:layout:css', ['template' => 'plugins/KPI/Asset/css/app.css']);
 
         $this->hook->on('template:layout:js', ['template' => 'plugins/KPI/Asset/js/kpi.js']);
-        // Dashboard Menu
+
+        $this->template->hook->attach('template:project:dropdown', 'KPI:project/dropdown');
         $this->template->hook->attach('template:dashboard:sidebar', 'KPI:dashboard/sidebar');
 
         // Top Menu

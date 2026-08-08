@@ -39,7 +39,7 @@
         </div>
         <div class="card-content">
             <div class="card-title"><?= t('Overall KPI') ?></div>
-            <div class="card-value"><?= $stats['progress'] ?>%</div>
+            <div class="card-value"><?= $kpiStats['kpiProg'] ?>%</div>
             <div class="card-footer"><?= t('Overall Project Performance') ?></div>
         </div>
     </div>
@@ -116,11 +116,11 @@
 
             <div class="card-value">
 
-                <?php if ($stats['progress'] >= 90): ?>
+                <?php if ($kpiStats['kpiProg'] >= 90): ?>
 
                 <span class="health-good"><?= t('Excellent') ?></span>
 
-                <?php elseif ($stats['progress'] >= 75): ?>
+                <?php elseif ($kpiStats['kpiProg'] >= 75): ?>
 
                 <span class="health-warning"><?= t('Good') ?></span>
 
@@ -133,7 +133,7 @@
             </div>
 
             <div class="card-footer">
-                <?= $stats['progress'] ?>% <?= t('Overall Score') ?>
+                <?= $kpiStats['kpiProg'] ?>% <?= t('Overall Score') ?>
             </div>
 
         </div>
@@ -146,6 +146,16 @@
 
     <div class="dashboard-panel">
 
+        <h3><?= t('KPI Status') ?></h3>
+
+        <div class="chart-container">
+            <canvas id="kpiChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="dashboard-panel">
+
         <h3><?= t('Task Status') ?></h3>
 
         <div class="chart-container">
@@ -153,10 +163,12 @@
         </div>
 
     </div>
+</div>
+<div class="dashboard-chart-grid">
 
-    <div class="dashboard-panel">
+<div class="dashboard-panel">
 
-        <h3><?= t('KPI Trend') ?></h3>
+        <h3><?= t('Task Trend') ?></h3>
 
         <div class="chart-container">
             <canvas id="trendChart"></canvas>
@@ -170,6 +182,11 @@
         data-completed="<?= $stats['completed'] ?>" 
         data-open="<?= $stats['open'] ?>"
         data-overdue="<?= $stats['overdue'] ?>" 
+        data-done="<?= $kpiStats['done'] ?>" 
+        data-ongoing="<?= $kpiStats['ongoing'] ?>" 
+        data-pending="<?= $kpiStats['pending'] ?>"
+        data-taskTrendLabel='<?= json_encode($taskTrend['labels']) ?>'
+        data-taskTrendData='<?= json_encode($taskTrend['percentage']) ?>'
         data-progress="<?= $stats['progress'] ?>">
     </div>
-</div> 
+</div>

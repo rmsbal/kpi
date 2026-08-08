@@ -1,4 +1,164 @@
-table td {
-    padding: 0.5rem;
-    border: 1px solid rgba(219,205,205,0.47)
+/* ==========================================
+   Kanboard Table System v1
+========================================== */
+
+.kb-table-container {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.kb-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+    min-width: 700px;
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+.kb-table thead {
+    background: #f7f7f7;
+}
+
+.kb-table thead th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    white-space: nowrap;
+}
+
+/* ==========================================
+   Body
+========================================== */
+
+.kb-table tbody td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.kb-table tbody tr:hover {
+    background: #fafafa;
+}
+
+/* Zebra */
+
+.kb-table-striped tbody tr:nth-child(even) {
+    background: #fcfcfc;
+}
+
+/* ==========================================
+   Compact
+========================================== */
+
+.kb-table-compact th,
+.kb-table-compact td {
+    padding: 8px 10px;
+}
+
+/* ==========================================
+   Sticky Header
+========================================== */
+
+.kb-table-sticky thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f7f7f7;
+}
+
+/* ==========================================
+   Alignment
+========================================== */
+
+.kb-text-left {
+    text-align: left;
+}
+
+.kb-text-center {
+    text-align: center;
+}
+
+.kb-text-right {
+    text-align: right;
+}
+
+/* ==========================================
+   Width Utilities
+========================================== */
+
+.kb-w-50  { width:50px; }
+.kb-w-75  { width:75px; }
+.kb-w-100 { width:100px; }
+.kb-w-150 { width:150px; }
+.kb-w-200 { width:200px; }
+.kb-w-auto { width:auto; }
+
+/* ==========================================
+   Status Colors
+========================================== */
+
+.kb-success {
+    color: #2e7d32;
+    font-weight: 600;
+}
+
+.kb-warning {
+    color: #ef6c00;
+    font-weight: 600;
+}
+
+.kb-danger {
+    color: #c62828;
+    font-weight: 600;
+}
+
+.kb-muted {
+    color: #777;
+}
+
+/* ==========================================
+   Action Column
+========================================== */
+
+.kb-actions {
+    white-space: nowrap;
+}
+
+.kb-actions a,
+.kb-actions button {
+    margin-right: 6px;
+}
+
+/* ==========================================
+   Empty State
+========================================== */
+
+.kb-table-empty {
+    text-align: center;
+    color: #888;
+    padding: 30px;
+}
+
+/* ==========================================
+   Responsive
+========================================== */
+
+@media (max-width:768px){
+
+    .kb-table {
+        min-width: 600px;
+    }
+
+    .kb-table th,
+    .kb-table td {
+        padding: 10px;
+    }
+
 }

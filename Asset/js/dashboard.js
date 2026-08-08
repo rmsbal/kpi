@@ -11,6 +11,87 @@ document.addEventListener("DOMContentLoaded", function () {
     const overdue = parseInt(element.dataset.overdue) || 0;
     const progress = parseInt(element.dataset.progress) || 0;
 
+    const done = parseInt(element.dataset.done) || 0;
+    const ongoing = parseInt(element.dataset.ongoing) || 0;
+    const pending = parseInt(element.dataset.pending) || 0;
+
+    const taskTrendLabel = JSON.parse(element.dataset.tasktrendlabel);
+    const taskTrendData = JSON.parse(element.dataset.tasktrenddata);
+
+    // console.log(taskTrendLabel);
+    // console.log(taskTrendData);
+
+
+    /* ==========================
+       KPI STATUS CHART
+    ========================== */
+
+    const kpiCanvas = document.getElementById("kpiChart");
+
+    if (kpiCanvas) {
+
+        const total = completed + open + overdue;
+
+        const chartData = total === 0
+            ? {
+                labels: ["No Data"],
+                datasets: [{
+                    data: [1],
+                    backgroundColor: ["#d6d6d6"],
+                    borderWidth: 0
+                }]
+            }
+            : {
+                labels: ["Done", "Ongoing", "Pending"],
+                datasets: [{
+                    data: [done, ongoing, pending],
+                    backgroundColor: [
+                        "#43A047",
+                        "#f2ff00",
+                        "#E53935"
+                    ],
+                    borderColor: "#ffffff", 
+                    borderWidth: 2
+                }]
+            };
+
+        new Chart(kpiCanvas, {
+
+            type: "doughnut",
+
+            data: chartData,
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                cutout: "65%",
+
+                animation: {
+                    animateRotate: true,
+                    animateScale: true
+                },
+
+                plugins: {
+
+                    legend: {
+                        position: "bottom"
+                    },
+
+                    tooltip: {
+                        enabled: total > 0
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
     /* ==========================
        TASK STATUS CHART
     ========================== */
@@ -36,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     data: [completed, open, overdue],
                     backgroundColor: [
                         "#43A047",
-                        "#1E88E5",
+                        "#f2ff00",
                         "#E53935"
                     ],
                     borderColor: "#ffffff", 
@@ -82,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* ==========================
-       KPI TREND
+       TASK TREND
     ========================== */
 
     const trendCanvas = document.getElementById("trendChart");
@@ -96,48 +177,22 @@ document.addEventListener("DOMContentLoaded", function () {
             type: "line",
 
             data: {
-
-                labels: [
-                    "Jan",
-                    "Feb",
-                    "Mar",
-                    "Apr",
-                    "May",
-                    "Jun",
-                    "Aug",
-                    "Sep",
-                    "Oct",
-                    "Nov",
-                    "Dec"
-                ],
+                labels: taskTrendLabel,
 
                 datasets: [{
+                    label: "Overall Task",
 
-                    label: "Overall KPI",
-
-                    data: [
-                        72,
-                        76,
-                        80,
-                        84,
-                        89,
-                        lastValue
-                    ],
+                    data: taskTrendData,
 
                     borderColor: "#1976D2",
-
                     backgroundColor: "rgba(25,118,210,.10)",
 
                     fill: true,
-
                     tension: 0.35,
 
                     pointRadius: 4,
-
                     pointHoverRadius: 7
-
                 }]
-
             },
 
             options: {

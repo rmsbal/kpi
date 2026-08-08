@@ -1,0 +1,155 @@
+/* ==========================================
+   Kanboard Form System v1
+   Reusable Responsive Grid
+========================================== */
+
+.kb-form {
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+/* Optional width modifiers */
+.kb-form-sm { max-width: 500px; }
+.kb-form-md { max-width: 700px; }
+.kb-form-lg { max-width: 900px; }
+.kb-form-xl { max-width: 1200px; }
+
+.kb-form-panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.kb-form-header {
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    background: #f7f7f7;
+}
+
+.kb-form-body {
+    padding: 20px;
+}
+
+.kb-form-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #ddd;
+    text-align: right;
+    background: #fafafa;
+}
+
+/* ==========================================
+   Responsive Grid
+========================================== */
+
+.kb-grid {
+    display: grid;
+    gap: 18px;
+}
+
+/* Auto-fit columns */
+.kb-grid-auto {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Fixed grids */
+.kb-grid-1 { grid-template-columns: repeat(1,1fr); }
+.kb-grid-2 { grid-template-columns: repeat(2,1fr); }
+.kb-grid-3 { grid-template-columns: repeat(3,1fr); }
+.kb-grid-4 { grid-template-columns: repeat(4,1fr); }
+
+/* ==========================================
+   Column Span
+========================================== */
+
+.kb-span-1 { grid-column: span 1; }
+.kb-span-2 { grid-column: span 2; }
+.kb-span-3 { grid-column: span 3; }
+.kb-span-4 { grid-column: span 4; }
+
+/* ==========================================
+   Form Controls
+========================================== */
+
+.kb-form label {
+    display:block;
+    margin-bottom:6px;
+    font-weight:600;
+}
+
+.kb-form input[type=text],
+.kb-form input[type=number],
+.kb-form input[type=email],
+.kb-form input[type=password],
+.kb-form input[type=date],
+.kb-form input[type=time],
+.kb-form input[type=file],
+.kb-form select,
+.kb-form textarea {
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    height: 2rem;
+    border-color: rgba(0,0,0,0.23);
+    border-width: 1px solid;
+}
+
+.kb-form textarea{
+    resize:vertical;
+    min-height:120px;
+}
+
+.kb-checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+/* ==========================================
+   Utilities
+========================================== */
+
+.mb-0{margin-bottom:0;}
+.mb-1{margin-bottom:10px;}
+.mb-2{margin-bottom:20px;}
+.mb-3{margin-bottom:30px;}
+
+.mt-1{margin-top:10px;}
+.mt-2{margin-top:20px;}
+
+.text-right{text-align:right;}
+.text-center{text-align:center;}
+
+/* ==========================================
+   Mobile
+========================================== */
+
+@media (max-width:768px){
+
+    .kb-grid-2,
+    .kb-grid-3,
+    .kb-grid-4{
+        grid-template-columns:1fr;
+    }
+
+    .kb-span-2,
+    .kb-span-3,
+    .kb-span-4{
+        grid-column:span 1;
+    }
+
+    .kb-form-body{
+        padding:15px;
+    }
+
+    .kb-form-footer{
+        text-align:center;
+    }
+
+    .kb-form-footer .btn{
+        width:100%;
+        margin-bottom:8px;
+    }
+}
